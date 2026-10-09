@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄婷婷 | 记录册</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* ================= 基础重置 ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #2b2b2b;
+            color: #e0e0e0;
+            font-family: 'Microsoft YaHei', serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+
+        /* ================= 导航栏 ================= */
+        header {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: center;    /* 居中对齐 */
+            align-items: center;
+            background: transparent;
+            border-bottom: none;
+        }
+
+        nav ul { 
+            display: flex; 
+            list-style: none; 
+            gap: 50px;                  /* 增大间距 */
+        }
+        nav a {
+            font-family: 'Microsoft YaHei', serif;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #b0b0b0;             /* 稍微调亮一点 */
+            cursor: pointer;
+            padding-bottom: 6px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        nav a:hover, nav a.active { 
+            color: #ffffff; 
+            border-bottom: 2px solid #ffffff; 
+        }
+
+        /* ================= 页面容器 ================= */
+        .page { display: none; flex: 1; padding: 100px 20px; animation: fadeIn 0.6s ease forwards; }
+        #video, #music, #gallery {
+            padding-top: 150px;   /* 数值按需调，越大越靠下 */
+        }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .page-title { text-align: center; font-size: 2.5rem; color: #ffffff; margin-bottom: 50px; font-weight: 400; letter-spacing: 2px; }
+
+        /* ================= Home ================= */
+        #home { padding: 0; }
+        .home-hero { position: relative; width: 100%; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 60px; overflow: hidden; }
+        .home-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .home-hero-bg img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+            opacity: 0.6;
+            filter: grayscale(30%);
+        }
+
+        /* ================= Profile（上下分栏） ================= */
+        .bio-card-wrap {
+            max-width: 1100px; margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px; padding: 50px 55px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+            backdrop-filter: blur(14px);
+        }
+        /* 上下分区容器 */
+        .bio-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+        /* 本人区块 */
+        .bio-person-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .bio-person-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .bio-person-avatar {
+            width: 200px; height: 200px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+            border: 2px solid rgba(220, 190, 120, 0.55);
+            box-shadow: 0 0 0 8px rgba(220, 190, 120, 0.08), 0 18px 40px rgba(0,0,0,0.6);
+        }
+        .bio-person-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .bio-person-headline { display: flex; flex-direction: column; gap: 8px; }
+        .bio-name { font-size: 3rem; font-weight: 700; letter-spacing: 4px; color: #ffffff; line-height: 1.1; }
+        .bio-name-en { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #d8c08a; letter-spacing: 3px; font-style: italic; }
+
+        /* 宠物区块 */
+        .bio-pet-section {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 24px;
+            padding: 32px 32px 28px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .bio-pet-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .bio-pet-avatar {
+            width: 130px; height: 130px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+            border: 2px solid rgba(220, 190, 120, 0.4);
+            box-shadow: 0 0 0 6px rgba(220, 190, 120, 0.06), 0 12px 28px rgba(0,0,0,0.5);
+        }
+        .bio-pet-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .bio-pet-headline { display: flex; flex-direction: column; gap: 6px; }
+        .bio-pet-name { font-size: 2.2rem; font-weight: 600; letter-spacing: 2px; color: #f0e0b0; line-height: 1.1; }
+        .bio-pet-name-en { font-family: 'Playfair Display', serif; font-size: 1rem; color: #b9a06a; letter-spacing: 2px; font-style: italic; }
+
+        /* 信息网格公共 */
+        .bio-col-items { display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; }
+        .bio-item { display: flex; gap: 12px; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+        .bio-item .k { color: #8f8f8f; letter-spacing: 1px; flex: 0 0 80px; }
+        .bio-item .v { color: #f0f0f0; text-align: left; flex: 1; }
+
+        /* 社交链接容器 */
+        .bio-social-block { margin-top: 6px; }
+        .bio-social-title {
+            font-size: 12px; color: #b9a06a; letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 12px; padding-bottom: 6px;
+            border-bottom: 1px solid rgba(220, 190, 120, 0.15);
+        }
+        .bio-socials-list { display: flex; flex-wrap: wrap; gap: 12px; }
+        .social-icon-btn {
+            display: inline-flex; align-items: center; gap: 9px;
+            padding: 8px 18px; border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #cfcfcf; font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .social-icon-btn img { width: 22px; height: 22px; object-fit: contain; }
+        .social-icon-btn:hover { background: #e8d3a0; color: #2b2b2b; border-color: #e8d3a0; transform: translateY(-2px); }
+        /* 宠物社交按钮稍小 */
+        .bio-pet-section .social-icon-btn {
+            padding: 6px 14px; font-size: 12px; gap: 7px;
+        }
+        .bio-pet-section .social-icon-btn img { width: 18px; height: 18px; }
+
+        /* ================= 二级分类 ================= */
+        .video-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; max-width: 800px; margin: 0 auto 40px; padding: 0 20px; }
+        .tab-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #a0a0a0; padding: 8px 20px; border-radius: 30px; font-size: 14px; cursor: pointer; font-family: 'Microsoft YaHei', serif; transition: all 0.3s ease; }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.08); color: #ffffff; }
+        .tab-btn.active { background: #ffffff; color: #2b2b2b; border-color: #ffffff; font-weight: 600; }
+        .video-content-wrapper { max-width: 1000px; margin: 0 auto; }
+        .video-sub-page { display: none; animation: fadeIn 0.5s ease forwards; }
+        .video-sub-page.active { display: block; }
+
+        /* ================= 通用卡片网格 ================= */
+        .card-group { max-width: 1000px; margin: 0 auto 50px; }
+        .card-group-title {
+            font-size: 1.8rem; color: #ffffff; font-weight: 400; letter-spacing: 2px;
+            margin-bottom: 25px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .media-card { cursor: pointer; transition: transform 0.3s ease; }
+        .media-card:hover { transform: translateY(-5px); }
+        .media-card .poster {
+            width: 100%; 
+            aspect-ratio: 4 / 5;
+            overflow: hidden; border-radius: 8px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6); 
+            margin-bottom: 14px;
+            background: #1e1e1e;
+        }
+        .media-card .poster.portrait { aspect-ratio: 3/4; }
+        .media-card .poster img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            display: block; 
+            transition: transform 0.4s ease; 
+        }
+        .media-card:hover .poster img { transform: scale(1.05); }
+        .media-card .media-name {
+            font-size: 16px; 
+            color: #e0e0e0; 
+            text-align: center;
+            letter-spacing: 1px; 
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* ================= 详情页通用 ================= */
+        .detail-view { display: none; max-width: 1000px; margin: 0 auto; padding: 20px 0; animation: fadeIn 0.4s ease; }
+        .detail-view.active { display: block; }
+        .detail-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px; padding: 40px;
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .detail-cover { 
+            width: 100%; 
+            aspect-ratio: 4 / 5;
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5); 
+        }
+        .detail-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .detail-info h3 { font-size: 2.2rem; font-weight: 400; color: #ffffff; margin-bottom: 10px; letter-spacing: 2px; }
+        .detail-info .detail-meta { font-size: 1rem; color: #b0b0b0; margin-bottom: 25px; letter-spacing: 1px; line-height: 1.8; }
+        .detail-info .detail-meta strong { color: #ffffff; font-weight: 500; }
+        .detail-info .section-label {
+            font-size: 0.85rem; color: #888; letter-spacing: 2px; text-transform: uppercase;
+            margin-top: 25px; margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;
+        }
+        .track-list { list-style: none; margin-bottom: 10px; }
+        .track-list li {
+            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: #cccccc; font-size: 15px;
+            display: flex; justify-content: space-between; align-items: center; gap: 20px;
+        }
+        .track-list li .track-name { color: #f0f0f0; text-align: left; flex: 1; }
+        .track-list li .track-artist { color: #9a9a9a; text-align: right; flex-shrink: 0; font-size: 14px; }
+        .platform-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+        .platform-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
+            color: #ddd; padding: 8px 20px; border-radius: 30px; font-size: 13px;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .platform-btn:hover { background: #ffffff; color: #1a1e24; border-color: #ffffff; }
+        .back-to-list {
+            display: inline-block; margin-bottom: 30px;
+            color: #a0a0a0; font-size: 14px; letter-spacing: 1px;
+            cursor: pointer; transition: color 0.3s ease;
+        }
+        .back-to-list:hover { color: #ffffff; }
+
+        /* ================= Music页 ================= */
+        .music-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .music-card { display: flex; flex-direction: column; cursor: pointer; transition: transform 0.3s ease; }
+        .music-card:hover { transform: translateY(-5px); }
+        .music-card .cover { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 4px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); margin-bottom: 15px; }
+        .music-card .cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .music-card:hover .cover img { transform: scale(1.06); }
+        .music-card .info { text-align: center; }
+        .music-card .info .title { font-size: 15px; color: #ffffff; font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+        .music-card .info .date { font-size: 13px; color: #888888; letter-spacing: 1px; }
+
+        /* ================= Gallery ================= */
+        .gallery-square { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .gallery-square .item { aspect-ratio: 1 / 1; border-radius: 4px; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); cursor: pointer; }
+        .gallery-square .item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .gallery-square .item:hover img { transform: scale(1.08); }
+
+        /* ================= 相册详情页 ================= */
+        .gallery-detail-content {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+        .gallery-detail-content img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            margin: 0 auto 24px;
+        }
+        .gallery-detail-content .gallery-title {
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        .gallery-detail-content .gallery-desc {
+            font-size: 15px;
+            color: #c8c8c8;
+            line-height: 1.9;
+            letter-spacing: 0.5px;
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .gallery-detail-content .gallery-desc strong {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        /* ================= 响应式 ================= */
+        @media (max-width: 1024px) {
+            .music-grid { grid-template-columns: repeat(3, 1fr); }
+            .detail-container { grid-template-columns: 1fr; gap: 30px; padding: 30px; }
+            .detail-cover { max-width: 400px; margin: 0 auto; }
+            .bio-person-avatar { width: 170px; height: 170px; }
+            .bio-name { font-size: 2.6rem; }
+            .bio-pet-avatar { width: 110px; height: 110px; }
+            .bio-pet-name { font-size: 1.9rem; }
+            .card-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 25px; }
+        }
+        @media (max-width: 768px) {
+            header { padding: 20px; flex-direction: column; gap: 15px; }
+            nav ul { gap: 20px; flex-wrap: wrap; justify-content: center; }
+            nav a { font-size: 15px; }
+            .music-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .card-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+            .card-group-title { font-size: 1.4rem; }
+            .detail-info h3 { font-size: 1.8rem; }
+            .bio-card-wrap { padding: 30px 22px; border-radius: 20px; }
+            .bio-person-header { justify-content: center; text-align: center; flex-direction: column; }
+            .bio-person-headline { align-items: center; }
+            .bio-name { font-size: 2.2rem; }
+            .bio-pet-header { justify-content: center; text-align: center; flex-direction: column; }
+            .bio-pet-headline { align-items: center; }
+            .bio-col-items { grid-template-columns: 1fr; gap: 0; }
+            .bio-socials-list { justify-content: center; }
+            .bio-pet-section .bio-socials-list { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .music-grid { grid-template-columns: 1fr; }
+            .card-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .media-card .media-name { font-size: 13px; }
+            .bio-person-avatar { width: 140px; height: 140px; }
+            .bio-pet-avatar { width: 90px; height: 90px; }
+            .bio-pet-name { font-size: 1.5rem; }
+            .bio-name { font-size: 1.8rem; }
+            .bio-item .k { flex: 0 0 70px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= 导航栏 ================= -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" data-target="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-target="bio">Profile</a></li>
+                <li><a href="#" class="nav-link" data-target="video">Video</a></li>
+                <li><a href="#" class="nav-link" data-target="music">Music</a></li>
+                <li><a href="#" class="nav-link" data-target="gallery">Gallery</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ================= 页面 1：Home ================= -->
+    <main id="home" class="page active">
+        <div class="home-hero">
+            <div class="home-hero-bg">
+                <img src="https://sns-img-hw.xhscdn.com/1040g00832615pt64ke205n0rehn1uem3ln5eh10?imageView2/2/w/0/format/jpg" alt="黄婷婷背景">
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= 页面 2：Profile ================= -->
+    <main id="bio" class="page">
+        <div class="bio-card-wrap">
+            <div class="bio-stack">
+                <!-- 本人区块（上） -->
+                <div class="bio-person-section">
+                    <div class="bio-person-header">
+                        <div class="bio-person-avatar">
+                            <img src="https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_092a188a682657c760949f9b3dd70809~c5_300x300.jpeg" alt="黄婷婷写真">
+                        </div>
+                        <div class="bio-person-headline">
+                            <div class="bio-name">黄婷婷</div>
+                            <div class="bio-name-en">Huang Tingting</div>
+                        </div>
+                    </div>
+                    <div class="bio-cols" id="bio-self-cols"></div>
+                    <div class="bio-social-block">
+                        <div class="bio-social-title">本人社交平台</div>
+                        <div class="bio-socials-list" id="bio-person-socials"></div>
+                    </div>
+                </div>
+
+                <!-- 宠物区块（下） -->
+                <div class="bio-pet-section">
+                    <div class="bio-pet-header">
+                        <div class="bio-pet-avatar">
+                            <img src="https://sns-avatar-qc.xhscdn.com/avatar/66d5f529d0a6d335db281f36.jpg?imageView2/2/w/540/format/webp|imageMogr2/strip2" alt="宠物五一">
+                        </div>
+                        <div class="bio-pet-headline">
+                            <div class="bio-pet-name">五一</div>
+                            <div class="bio-pet-name-en">Wuyi</div>
+                        </div>
+                    </div>
+                    <div class="bio-cols" id="bio-pet-cols"></div>
+                    <div class="bio-social-block">
+                        <div class="bio-social-title">五一社交平台</div>
+                        <div class="bio-socials-list" id="bio-pet-socials"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= 页面 3：Video ================= -->
+    <main id="video" class="page">
+        <div class="video-tabs">
+            <button class="tab-btn active" data-subtarget="sub-film">影视</button>
+            <button class="tab-btn" data-subtarget="sub-variety">综艺</button>
+            <button class="tab-btn" data-subtarget="sub-mv">MV</button>
+            <button class="tab-btn" data-subtarget="sub-vlog">Vlog</button>
+            <button class="tab-btn" data-subtarget="sub-live">直播</button>
+            <button class="tab-btn" data-subtarget="sub-stage">公演</button>
+            <button class="tab-btn" data-subtarget="sub-show">演出</button>
+            <button class="tab-btn" data-subtarget="sub-other">其他</button>
+        </div>
+        <div class="video-content-wrapper">
+            <!-- 影视 -->
+            <div id="sub-film" class="video-sub-page active">
+                <div id="film-list-view"></div>
+                <div id="film-detail-view" class="detail-view">
+                    <div class="back-to-list" id="back-to-film-list-btn">← 返回影视列表</div>
+                    <div class="detail-container" id="film-detail-content"></div>
+                </div>
+            </div>
+            <!-- 综艺 -->
+            <div id="sub-variety" class="video-sub-page">
+                <div id="variety-list-view"></div>
+                <div id="variety-detail-view" class="detail-view">
+                    <div class="back-to-list" id="back-to-variety-list-btn">← 返回综艺列表</div>
+                    <div class="detail-container" id="variety-detail-content"></div>
+                </div>
+            </div>
+            <!-- 公演 -->
+            <div id="sub-stage" class="video-sub-page">
+                <div id="stage-list-view"></div>
+                <div id="stage-detail-view" class="detail-view">
+                    <div class="back-to-list" id="back-to-stage-list-btn">← 返回公演列表</div>
+                    <div class="detail-container" id="stage-detail-content"></div>
+                </div>
+            </div>
+            <!-- MV -->
+            <div id="sub-mv" class="video-sub-page">
+                <div id="mv-list-view"></div>
+                <div id="mv-detail-view" class="detail-view">
+                    <div class="back-to-list" id="back-to-mv-list-btn">← 返回MV列表</div>
+                    <div class="detail-container" id="mv-detail-content"></div>
+                </div>
+            </div>
+            <!-- Vlog / 直播 / 其他 -->
+            <div id="sub-vlog" class="video-sub-page"><div id="vlog-list-view"></div></div>
+            <div id="sub-live" class="video-sub-page"><div id="live-list-view"></div></div>
+            <!-- 演出 -->
+            <div id="sub-show" class="video-sub-page">
+                <div id="show-list-view"></div>
+                <div id="show-detail-view" class="detail-view">
+                    <div class="back-to-list" id="back-to-show-list-btn">← 返回演出列表</div>
+                    <div class="detail-container" id="show-detail-content"></div>
+                </div>
+            </div>
+            <!-- 其他 -->
+            <div id="sub-other" class="video-sub-page"><div id="other-list-view"></div></div>
+        </div>
+    </main>
+
+    <!-- ================= 页面 4：Music ================= -->
+    <main id="music" class="page">
+        <div id="music-list-view">
+            <div class="video-tabs">
+                <button class="tab-btn active" data-filter="all">All</button>
+                <button class="tab-btn" data-filter="solo">Solo</button>
+                <button class="tab-btn" data-filter="feat">Feat</button>
+                <button class="tab-btn" data-filter="other">其他</button>
+            </div>
+            <div class="music-grid" id="music-grid-container"></div>
+        </div>
+        <div id="music-detail-view" class="detail-view">
+            <div class="back-to-list" id="back-to-music-btn">← 返回音乐列表</div>
+            <div class="detail-container" id="music-detail-content"></div>
+        </div>
+    </main>
+
+    <!-- ================= 页面 5：Gallery ================= -->
+    <main id="gallery" class="page">
+        <div class="video-tabs">
+            <button class="tab-btn active" data-subtarget="gallery-business">商务</button>
+            <button class="tab-btn" data-subtarget="gallery-portrait">写真</button>
+            <button class="tab-btn" data-subtarget="gallery-life">生写</button>
+            <button class="tab-btn" data-subtarget="gallery-magazine">杂志</button>
+            <button class="tab-btn" data-subtarget="gallery-other">其他</button>
+        </div>
+        <div class="video-content-wrapper">
+            <div id="gallery-business" class="video-sub-page active">
+                <div id="gallery-business-list"></div>
+                <div id="gallery-business-detail" class="detail-view">
+                    <div class="back-to-list" data-back="gallery-business">← 返回商务列表</div>
+                    <div class="gallery-detail-content"></div>
+                </div>
+            </div>
+            <div id="gallery-portrait" class="video-sub-page">
+                <div id="gallery-portrait-list"></div>
+                <div id="gallery-portrait-detail" class="detail-view">
+                    <div class="back-to-list" data-back="gallery-portrait">← 返回写真列表</div>
+                    <div class="gallery-detail-content"></div>
+                </div>
+            </div>
+            <div id="gallery-life" class="video-sub-page">
+                <div id="gallery-life-list"></div>
+                <div id="gallery-life-detail" class="detail-view">
+                    <div class="back-to-list" data-back="gallery-life">← 返回生写列表</div>
+                    <div class="gallery-detail-content"></div>
+                </div>
+            </div>
+            <div id="gallery-magazine" class="video-sub-page">
+                <div id="gallery-magazine-list"></div>
+                <div id="gallery-magazine-detail" class="detail-view">
+                    <div class="back-to-list" data-back="gallery-magazine">← 返回杂志列表</div>
+                    <div class="gallery-detail-content"></div>
+                </div>
+            </div>
+            <div id="gallery-other" class="video-sub-page">
+                <div id="gallery-other-list"></div>
+                <div id="gallery-other-detail" class="detail-view">
+                    <div class="back-to-list" data-back="gallery-other">← 返回其他列表</div>
+                    <div class="gallery-detail-content"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= 核心 JavaScript ================= -->
+    <script>
+        // ============================================================
+        // 1. 数据区
+        // ============================================================
+
+        // ---------- Profile ----------
+        const bioData = {
+            selfItems: [
+                { label: '姓名', value: '黄婷婷' },
+                { label: '出生地', value: '江苏南京' },
+                { label: '生日', value: '1992.09.08' },
+                { label: '星座', value: '处女座' },
+                { label: '身高', value: '165cm' },
+                { label: '职业', value: '演员、歌手' },
+                { label: 'MBTI', value: 'INFP' },
+                { label: '粉丝名', value: '跳跳糖、T3' }
+            ],
+            petItems: [
+                { label: '宠物名', value: '五一' },
+                { label: '品种', value: '德文卷毛猫' },
+                { label: '生日', value: '2020.03.29' },
+                { label: '回家日期', value: '2020.05.01' },
+                { label: '毛色', value: '黑白' },
+                { label: '性别', value: '弟弟' }
+            ],
+            selfSocials: [
+                { name: '黄婷婷', url: 'https://weibo.com/u/7735668873', icon: 'https://www.sinaimg.cn/blog/developer/wiki/LOGO_64x64.png' },
+                { name: '黄婷婷', url: 'https://xhslink.cn/o/4J9FrODsoNu', icon: 'https://brandlogos.net/wp-content/uploads/2022/07/Xiaohongshu-logo.png' },
+                { name: '黄婷婷', url: 'https://v.douyin.com/jy6nj6nML6Y/', icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tiktok.png' },
+                { name: '黄婷婷TiTi', url: 'https://space.bilibili.com/1727095428', icon: 'https://f.pz.al/pzal/2026/10/09/dad94c60bbe43.png' },
+                { name: 'kotetehtt', url: 'https://www.instagram.com/kotetehtt', icon: 'https://f.pz.al/pzal/2026/10/09/89ab3cb7c670a.png' }
+            ],
+            petSocials: [
+                { name: '515151', url: 'https://xhslink.cn/o/AArxW6h0ors', icon: 'https://brandlogos.net/wp-content/uploads/2022/07/Xiaohongshu-logo.png' }
+            ]
+        };
+
+        // ---------- 影视 ----------
+        const filmData = {
+            groups: [
+                {
+                    title: '电视剧 / 网剧',
+                    items: [
+                        { id: 'f1', name: '《逆袭之星途璀璨》', poster: 'https://i0.hdslb.com/bfs/archive/54ef97dad688266e4ffec332813c808f08f158a9.jpg',
+                          role: '饰 程语柔', platform: '腾讯视频', episodes: '全36集（出演第1-36集）',
+                          watchLink: '#', cutLink: '#', btsLink: '#' },
+                        { id: 'f2', name: '《素手遮天》', poster: 'https://a-ssl.dtstatic.com/uploads/item/201807/05/20180705003538_kfkoi.jpg',
+                          role: '饰 素妗', platform: '腾讯视频', episodes: '全24集（出演第1-24集）',
+                          watchLink: '#', cutLink: '#', btsLink: '#' },
+                        { id: 'f3', name: '《全世界都在等你们分手》', poster: 'https://t15.baidu.com/it/u=861045139,956645755&fm=225&app=113&f=JPEG?w=515&h=387&s=7ED07D8D46D205D08C84BD2803003090',
+                          role: '饰 林清妙 / 徐甜甜', platform: '芒果TV', episodes: '全24集（出演第1-24集）',
+                          watchLink: '#', cutLink: '#', btsLink: '#' }
+                    ]
+                },
+                {
+                    title: '电影 / 微电影',
+                    items: [
+                        { id: 'f4', name: '微电影《纪念品》', poster: 'https://puui.qpic.cn/vcover_vt_pic/0/ctrhckipuiyxv2rt1453026624.jpg',
+                          role: '饰 婷婷', platform: '腾讯视频', episodes: '单片',
+                          watchLink: '#', cutLink: '#', btsLink: '#' },
+                        { id: 'f5', name: '电影《一生有你2019》', poster: 'https://puui.qpic.cn/vcover_vt_pic/0/fq4h1jihnp01xqp1577154770',
+                          role: '饰 蕾蕾', platform: '院线 / 腾讯视频', episodes: '电影长片',
+                          watchLink: '#', cutLink: '#', btsLink: '#' },
+                        { id: 'f6', name: '电影《翠狐戏夫》', poster: 'https://puui.qpic.cn/vcover_vt_pic/0/mzc002004dsltzm1596175854691',
+                          role: '饰 小翠', platform: '腾讯视频', episodes: '电影长片',
+                          watchLink: '#', cutLink: '#', btsLink: '#' },
+                        { id: 'f7', name: '微电影《大世界扭蛋机2 准点下班》', poster: 'https://i1.hdslb.com/bfs/bangumi/image/844a4e10d809332e1459b384c5ea014411af049d.png',
+                          role: '饰 前女友', platform: '哔哩哔哩', episodes: '单片',
+                          watchLink: '#', cutLink: '#', btsLink: '#' },
+                        { id: 'f8', name: '微电影《天生女主》', poster: 'https://pics7.baidu.com/feed/91529822720e0cf372884e841397bf13bf09aaab.jpeg',
+                          role: '饰 善善', platform: '微博', episodes: '单片',
+                          watchLink: '#', cutLink: '#', btsLink: '#' }
+                    ]
+                },
+                {
+                    title: '未播出',
+                    items: [
+                        { id: 'drama_xyq', name: '《小夜曲》', poster: 'https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2FSFpY3XDmjCaauPRY08mM6BOiaUsGX48x3XMdmRR3tYEyl1542191323327.jpeg&thumbnail=660x2147483647&quality=80&type=jpg',
+                          role: '饰 蔚蓝', platform: '待定', episodes: '未播出',
+                          watchLink: '#', cutLink: '#', btsLink: '#' }
+                    ]
+                }
+            ]
+        };
+
+        // ---------- 综艺 ----------
+        const varietyData = {
+            groups: [
+                {
+                    title: '常驻',
+                    items: [
+                        { id: 'variety_wxcyb', name: '无限超越班', poster: 'https://img1.baidu.com/it/u=2394531147,1773725738&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=889',
+                          platform: '优酷', watchLink: 'https://v.youku.com/v_show/id_XNjUxOTc3NzY0NA==.html', btsLink: '#', otherLink: '#' }
+                    ]
+                },
+                {
+                    title: '飞行',
+                    items: [
+                        { id: 'variety_2026_01', name: '20260912 CCTV3 远山之约(蜀山篇)', poster: 'https://pics0.baidu.com/feed/3bf33a87e950352a96165c3d2e02bde0b2118b67.jpeg@f_auto?token=1f943d5ba88b4a46755d227963696cac',
+                          platform: 'CCTV节目官网', watchLink: 'https://tv.cctv.cn/2026/09/12/VIDEIV4yJBEzugqheAG2al0P260912.shtml', btsLink: '#', otherLink: '#' }
+                    ]
+                }
+            ]
+        };
+
+        // ---------- MV ----------
+        const mvData = {
+            groups: [
+                {
+                    title: '单人',
+                    items: [
+                        { id: 'mv_solo1', name: '星光闪耀(《逆袭之星途璀璨》电视剧插曲)', poster: 'https://i1.hdslb.com/bfs/archive/40785792b13a6071c29b8ddc3cbad8b6017ba33d.png',
+                          previewLink: '#', watchLink: 'https://www.bilibili.com/video/BV1Wx411z7Cw/', btsLink: '#' }
+                    ]
+                },
+                {
+                    title: '多人',
+                    items: [
+                        { id: 'mv_dr1', name: 'Bingo MV【个人CUT+完整版】', poster: 'https://i1.hdslb.com/bfs/archive/1b3aaffdf703ce9b4323e3b0ac892356639ae106.jpg',
+                          previewLink: '#', watchLink: 'bilibili.com/video/BV1vs411k7EN/', btsLink: '#' }
+                    ]
+                },
+                {
+                    title: '特别出演',
+                    items: [
+                        { id: 'mv_tc1', name: '薛之谦-彩券 MV CUT', poster: 'https://i1.hdslb.com/bfs/archive/a948247dbc47b0fe594dc74b9f42d5d6ffbadae8.jpg',
+                          previewLink: '#', watchLink: 'https://www.bilibili.com/video/BV1jX4y1V79A/', btsLink: '#' }
+                    ]
+                }
+            ]
+        };
+
+        // ---------- 其他视频类 ----------
+        const vlogData = {
+            groups: [
+                {
+                    title: 'Vlog',
+                    items: [
+                        { name: '20261005 【黄婷婷】七八月vlog', poster: 'https://i1.hdslb.com/bfs/archive/cdcda7b681e3c01f9b037dc7975f538ac2b734ba.jpg', link: 'https://www.bilibili.com/video/BV1DGHx61EAB/' }
+                    ]
+                }
+            ]
+        };
+        const liveData = {
+            groups: [
+                {
+                    title: '直播',
+                    items: [
+                        { name: '20260802 聊会儿天！！', poster: 'https://i1.hdslb.com/bfs/archive/79d5537b7bb5d5b63bdb56878e277e8808fe5c21.jpg', link: 'https://www.bilibili.com/video/BV1RX3R6yE4g/' }
+                    ]
+                }
+            ]
+        };
+        const stageData = {
+            groups: [
+                {
+                    title: '公演',
+                    items: [
+                        { name: '20191013 时之卷 单人CUT', poster: 'https://i1.hdslb.com/bfs/archive/73b049718271a95008131ce4544942b34c0b1716.jpg', link: 'https://www.bilibili.com/video/av71132173' }
+                    ]
+                }
+            ]
+        };
+        const showData = {
+            groups: [
+                {
+                    title: '演出',
+                    items: [
+                        { id: 'show1', name: '20201001 CCTV 唱响新时代 黄婷婷-未来已来',
+                          poster: 'https://i1.hdslb.com/bfs/archive/e780a6dcc9a780c34633ce5733736ed32418a52f.jpg',
+                          platform: '现场 / 线上',
+                          watchLink: 'https://www.bilibili.com/video/BV1uv411y7A8/?p=3',
+                          btsLink: '#' }
+                    ]
+                }
+            ]
+        };
+        const otherVideoData = {
+            groups: [
+                {
+                    title: '总选',
+                    items: [
+                        { name: '20190727 第六届偶像年度人气总决选', poster: 'https://i1.hdslb.com/bfs/archive/eb723663e23abc7d6e1b91d6d4fcb78af233fac9.jpg', link: 'https://www.bilibili.com/video/BV1qt411P7LX/' }
+                    ]
+                },
+                {
+                    title: '金曲大赏',
+                    items: [
+                        { name: '20180203 第四届年度金曲大赏演唱会 《人鱼》', poster: 'https://i1.hdslb.com/bfs/archive/9f2677eed63dd6b08e2c2681f64a6c87ce88b9f7.png', link: 'https://www.bilibili.com/video/av19094922' },
+                        { name: '20180203 第四届年度金曲大赏演唱会 《巧克力密语》', poster: 'https://i1.hdslb.com/bfs/archive/234c802433205db50dd9f36dbcd9b8d6f235d11b.png', link: 'https://www.bilibili.com/video/av19096295' },
+                        { name: '20180203 第四届年度金曲大赏演唱会 《暴走少女》', poster: 'https://i1.hdslb.com/bfs/archive/8d8c8420634b5506612d715b264ff7f056b9c111.png', link: 'https://www.bilibili.com/video/av19097201' },
+                        { name: '20180203 第四届年度金曲大赏演唱会 《Mad World》', poster: 'https://i1.hdslb.com/bfs/archive/56cbe86a4a348c815447b049e06ae425747efe05.jpg', link: 'https://www.bilibili.com/video/av19098391' }
+                    ]
+                },
+                {
+                    title: '风尚大赏',
+                    items: [
+                        { name: '20171118 第三届年度风尚大赏 个人CUT', poster: 'https://i1.hdslb.com/bfs/archive/5b51144e69c76872cbc4fc4cdc8def770e007a14.png', link: 'https://www.bilibili.com/video/av16448616' }
+                    ]
+                },
+                {
+                    title: '纪录片',
+                    items: [
+                        { name: '20160429 百度年榜冠军SOLO纪录片', poster: 'https://i1.hdslb.com/bfs/archive/2b207c4843fd2aaf87439559a65c7e05ba9f74d0.jpg', link: 'https://www.bilibili.com/video/av4506369' }
+                    ]
+                },
+                {
+                    title: '其他',
+                    items: [
+                        { name: '20190413 SNH48 GROUP第二届偶像运动会', poster: 'https://i1.hdslb.com/bfs/archive/bdee8e72da6e2c7f275e6f44d22db6fed19cb106.jpg', link: 'bilibili.com/video/BV1yb411K7eM/' }
+                    ]
+                }
+            ]
+        };
+
+        // ---------- 音乐 ----------
+        const musicAlbums = {
+            '1': { title: '好久不见', date: '2026.09.24', cover: 'https://p1.music.126.net/AsrYmNZdrL-gILzRRqQD0Q==/109951173967354346.jpg',
+                tracks: [{ name: '01. 好久不见', artist: 'NAVE / 黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: 'https://y.qq.com/n/ryqq_v2/songDetail/0042p3Ta1iWZDl' }, { name: '酷狗音乐', url: 'https://www.kugou.com/mixsong/fzhrmsf5.html' }, { name: '网易云音乐', url: 'https://music.163.com/#/song?id=3438601645' }] },
+            '2': { title: '听（TING）', date: '2026.09.08', cover: 'https://p1.music.126.net/pjdrPIt7gRsssSnbE7dQ1g==/109951173909954297.jpg',
+                tracks: [{ name: '01. 听 (TING)', artist: '黄婷婷' }, { name: '02. 听 (TING) (伴奏)', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }, { name: '网易云音乐', url: '#' }, { name: 'Spotify', url: '#' }] },
+            '3': { title: '最安静的人', date: '2026.09.05', cover: 'https://p2.music.126.net/xuXZy3BPSFszS0vo9g0JEg==/109951173904659064.jpg',
+                tracks: [{ name: '01. 最安静的人', artist: '黄婷婷' }, { name: '02. 最安静的人 (伴奏)', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }, { name: '网易云音乐', url: '#' }, { name: 'Spotify', url: '#' }] },
+            '4': { title: '美梦', date: '2026.02.10', cover: 'https://p2.music.126.net/gIbCaSamnGaPwRUo56mD0w==/109951172719961121.jpg',
+                tracks: [{ name: '01. 美梦', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }, { name: '网易云音乐', url: '#' }, { name: 'Spotify', url: '#' }] },
+            '5': { title: '《御妖厨娘》影视原声带', date: '2025.04.09', cover: 'https://y.qq.com/music/photo_new/T002R300x300M000003vmhQo2XYGM4_1.jpg',
+                tracks: [{ name: '02. 同呼吸', artist: '黄婷婷' }, { name: '04. 同呼吸 (伴奏)', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }, { name: 'Spotify', url: '#' }] },
+            '6': { title: '我的神使大人 网剧原声大碟', date: '2024.04.29', cover: 'https://p2.music.126.net/FaCtpRRHuS8lVZXN1aObgg==/109951169541020727.jpg',
+                tracks: [{ name: '04. 时空恋人', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '网易云音乐', url: '#' }] },
+            '7': { title: '《王妃芳龄三千岁》影视原声带', date: '2024.02.26', cover: 'https://y.qq.com/music/photo_new/T002R300x300M000003qEpbC4C2k4W_3.jpg',
+                tracks: [{ name: '01. 佳话', artist: '黄婷婷' }, { name: '03. 佳话 (伴奏)', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }] },
+            '8': { title: '全世界都在等你们分手 网剧原声音乐专辑', date: '2023.05.31', cover: 'https://y.qq.com/music/photo_new/T002R300x300M000000roGVs2djPv6_2.jpg',
+                tracks: [{ name: '02. 非你不可', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }] },
+            '9': { title: '翠狐戏夫 电影OST原声歌曲', date: '2021.02.09', cover: 'https://p1.music.126.net/vQoNnCTSQQSYg05BnOkyqg==/109951165698346652.jpg',
+                tracks: [{ name: '01. 未曾离去', artist: '黄婷婷' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }] },
+            '10': { title: '一生有你 电影原声带', date: '2019.12.02', cover: 'https://p1.music.126.net/PMb8EVTbPBZPxuajfB0gfw==/109951164608505423.jpg',
+                tracks: [{ name: '04. 唯你一生', artist: '金志文 / 黄婷婷' }, { name: '05. 青春舞曲', artist: '徐娇 / 黄婷婷 / 谢彬彬 / 晏紫东 / 吕绍聪 / 金志文' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }] },
+            '11': { title: 'SNH48 GROUP第六届偶像年度人气总决选演唱会音源LIVE (下)', date: '2019.08.18', cover: 'https://p1.music.126.net/cxLD07GqVhDCj8tuNT47eA==/109951164298177298.jpg',
+                tracks: [{ name: '05. 春日 (第六届总决选live版)', artist: '黄婷婷' }, { name: '09. 初日 (第六届总决选live版)', artist: 'SNH48' }, { name: '10. 心的旅程 (第六届总决选live版)', artist: 'SNH48' }, { name: '11. 我和我的祖国 (第六届总决选live版)', artist: 'SNH48' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }] },
+            '12': { title: 'SNH48 GROUP第六届偶像年度人气总决选演唱会音源LIVE (上)', date: '2019.08.12', cover: 'https://p1.music.126.net/BbMBJH2438NJvjzaqLsMVg==/109951164286285038.jpg',
+                tracks: [{ name: '01. 魔女的诗篇 (第六届总决选live版)', artist: 'SNH48' }],
+                platforms: [{ name: 'QQ音乐', url: '#' }, { name: '酷狗音乐', url: '#' }] }
+        };
+
+        const musicCardList = [
+            { id: '1', type: 'feat' }, { id: '2', type: 'solo' }, { id: '3', type: 'solo' },
+            { id: '4', type: 'solo' }, { id: '5', type: 'solo' }, { id: '6', type: 'solo' },
+            { id: '7', type: 'solo' }, { id: '8', type: 'solo' }, { id: '9', type: 'solo' },
+            { id: '10', type: 'solo' }, { id: '11', type: 'other' }, { id: '12', type: 'other' }
+        ];
+
+        // ---------- 相册 ----------
+        const galleryData = {
+            'gallery-business': [
+                { id: 'sw1', name: '20260822 SnackPaper一日店长',
+                  poster: 'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dXNsNWYwajMya2wzbXbxbmIuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+                  desc: '活动地点：全家便利店（梅园路店）上海市静安区梅园路228号103A室',
+                  images: [
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dXNsNWYwajMya2wzbXbxbmIuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dXgwNmh6ajMya2wzbXboZHouanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5djFnazRhajMya2wzbXcxdDIuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5djZkY3F1ajMya2wzbXb4NnYuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dmEwb3lhajMya2wzbXblODguanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dmRoYWZvajMya2wzbXb1MTIuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dmb3ejQ3ajMya2wzbXbucGkuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dmtyOHb3ajMya2wzbXbxbmEuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dW5nbDNsajMya2wzbXbranEuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dm51aWxvajMya2wzbXb1MTIuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dnNzYWFnajMya2wzbXboZHouanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dnRxazN0ajMyM3UzNXNlODIuanBnIiwibHMiOjE3OTE1NDAxOTB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2N5dnV1NWtiajMyM3UzNXNiMmEuanBnIiwibHMiOjE3OTE1NDAxOTB9'
+                  ]},
+                { id: 'sw2', name: '20260821 SnackPaper生日写真 1',
+                  poster: 'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JyZGpwNWFkajMwbTAxNDBkdXouanBnIiwibHMiOjE3OTE1NDAxNTR9',
+                  desc: '',
+                  images: [
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JyZGpwNWFkajMwbTAxNDBkdXouanBnIiwibHMiOjE3OTE1NDAxNTR9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JyY2byenV3ajMwbTAxNDBqemcuanBnIiwibHMiOjE3OTE1NDAxNTR9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JyZjBpenbkajMwbTAxNDBhaG8uanBnIiwibHMiOjE3OTE1NDAxNTR9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JyZzFzYnk1ajMwbTAxNDAxMGwuanBnIiwibHMiOjE3OTE1NDAxNTR9'
+                  ]},
+                { id: 'sw3', name: '20260821 SnackPaper生日写真 1',
+                  poster: 'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JtcnFmYzl1ajMzcmY1MGtlODguanBnIiwibHMiOjE3OTE1Mzk5MzJ9',
+                  desc: '',
+                  images: [
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JtcnFmYzl1ajMzcmY1MGtlODguanBnIiwibHMiOjE3OTE1Mzk5MzJ9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2Jtcnc3dmR2ajMzcmY1MGtlODguanBnIiwibHMiOjE3OTE1Mzk5MzJ9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JtcmxibzYzajMzcmY1MGt1MTQuanBnIiwibHMiOjE3OTE1Mzk5MzJ9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4RDhtazNneTFpZ2JtczB5eGx4ajMzcmY1MGs0cXkuanBnIiwibHMiOjE3OTE1Mzk5MzJ9'
+                  ]},
+            ],
+            'gallery-portrait': [
+                { id: 'xz1', name: '20260908 “接受不完美，奔赴属于自己的山海！” ​​​',
+                  poster: 'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaHBsMWI5ajM4ems1enExdDAuanBnIiwibHMiOjE3OTE1NDMxODB9',
+                  desc: '',
+                  images: [
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaHBsMWI5ajM4ems1enExdDAuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaHN2MWplajM4ems1enBxbjguanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaTBjaDFwajM2cW84emtlODQuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaTR6YzVhajM2cW84ems0cXQuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaG1rc3YxajMzdjgycWZucGYuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaTg4c3ViajM2dmw4bmb1MTAuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaWJ0dHA5ajM2cW84emtxbjguanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaWZkdHVzajM2cW84emtiMmQuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaWpnNTcwajM4ems2cW80cXQuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaGthZWs1ajM4bmc2dmw0cXQuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaW1yNHV3ajM2cW84emsxdDEuanBnIiwibHMiOjE3OTE1NDMxODB9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5neTFpZ3bmaXMzc2U4ajM2cW84emtxbjkuanBnIiwibHMiOjE3OTE1NDMxODB9'
+                  ]},
+            ],
+            'gallery-life': [
+                { id: 'sx1', name: '2018年9月 生日特别生写',
+                  poster: 'https://www.snh48.com/event/s246/images/bir_zb2.png',
+                  desc: '',
+                  images: [
+      'https://www.snh48.com/event/s246/images/bir_zb2.png',
+      'https://www.snh48.com/event/s246/images/bir_zb2.png',
+      'https://www.snh48.com/event/s246/images/bir_zb2.png'
+                  ]},
+            ],
+            'gallery-magazine': [
+                { id: 'zz1', name: '2025.12 《Beatxl合拍志》​​​',
+                  poster: 'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZWZ5a3M1ajMxeGQydGpiMmIuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+                  desc: '',
+                  images: [
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZWZ5a3M1ajMxeGQydGpiMmIuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZWR6azh5ajMxeGQydGplODIuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZWYyZTE4ajMxeGQydGp4NnEuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZXNmdzbjajMxeGQydGplODMuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZXI2bHg1ajMxeGQydGp1MHkuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZWVqNDNtajMxeGQydGpram0uanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZXA2dGliajMxeGQydGo0cXEuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZXNmcmRsajMxeGQydGpxbjYuanBnIiwibHMiOjE3OTE1NDM1NjF9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4YzNUaExseTFpODB5ZXZ6YmZlajMxeGQydGo0cXIuanBnIiwibHMiOjE3OTE1NDM1NjF9'
+                  ]},
+            ],
+            'gallery-other': [
+                { id: 'qt1', name: '20261006 秋天的风 自由 新的季节 假期快乐 #十一休time#​​​',
+                  poster: 'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd2oweDNxajMxc2MyZHNxbjUuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+                  desc: '',
+                  images: [
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdmbjanE0ajMxYmEwemb0Z3EuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd2oweDNxajMxc2MyZHNxbjUuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdnlyZXbpajMyNDAybGN4NnEuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdmpjenBhajMyNDAybGNxbjYuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdmx1Nm1wajMyNDAybGN1MHkuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdnB1NnJkajMybGMyNDBxbjYuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdnNpZnBmajMybGMyNDBxbjYuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdnZiN3RsajMybGMyNDAxa3ouanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdzI1dXb1ajMyNDAybGNxbjYuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdzY0NDb4ajMyNDAybGMxa3ouanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzdzlzbjYwajMybGMyNDAxa3ouanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd2VwZjJkajMybGMyNDBoZHUuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd2h4aXJ5ajMybGMyNDB4NnEuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd20yOGV0ajMybGMyNDBiMmEuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd3Frc28xajM0ZW8zYjBxbjcuanBnIiwibHMiOjE3OTE1NDM3Mjl9',
+      'https://data.hellotik.app/v1/download/image?token=eyJ1cmwiOiJobHRwczovL3b4MS5zaW5haW1nLmNuL29zajEwODAvMDA4cnc0UU5seTFpaHNzd242MXgxajMzYjA0ZW9iMmIuanBnIiwibHMiOjE3OTE1NDM3Mjl9'
+                  ]},
+            ]
+        };
+
+        // ============================================================
+        // 2. 渲染函数
+        // ============================================================
+
+        function renderMediaGroups(containerId, groups) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = groups.map(group => `
+                <div class="card-group">
+                    <h3 class="card-group-title">${group.title}</h3>
+                    <div class="card-grid">
+                        ${group.items.map(item => `
+                            <div class="media-card" data-item-id="${item.id}">
+                                <div class="poster"><img src="${item.poster}" alt="${item.name}"></div>
+                                <div class="media-name">${item.name}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderLinkGroups(containerId, groups) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = groups.map(group => `
+                <div class="card-group">
+                    <h3 class="card-group-title">${group.title}</h3>
+                    <div class="card-grid">
+                        ${group.items.map(item => `
+                            <a class="media-card" href="${item.link}" target="_blank">
+                                <div class="poster"><img src="${item.poster}" alt="${item.name}"></div>
+                                <div class="media-name">${item.name}</div>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // 3. 初始化与交互
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // 导航切换
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    const targetId = this.getAttribute('data-target');
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === targetId) {
+                            page.classList.add('active');
+                            window.scrollTo({top: 0, behavior: 'smooth'});
+                        }
+                    });
+                });
+            });
+
+            // ---------- Profile渲染 ----------
+            const bioSelfCols = document.getElementById('bio-self-cols');
+            const bioPetCols = document.getElementById('bio-pet-cols');
+            const bioPersonSocials = document.getElementById('bio-person-socials');
+            const bioPetSocials = document.getElementById('bio-pet-socials');
+
+            if (bioSelfCols) {
+                const renderItems = (items) => items.map(item =>
+                    `<div class="bio-item"><span class="k">${item.label}</span><span class="v">${item.value}</span></div>`
+                ).join('');
+                bioSelfCols.innerHTML = `<div class="bio-col-items">${renderItems(bioData.selfItems)}</div>`;
+            }
+            if (bioPetCols) {
+                const renderItems = (items) => items.map(item =>
+                    `<div class="bio-item"><span class="k">${item.label}</span><span class="v">${item.value}</span></div>`
+                ).join('');
+                bioPetCols.innerHTML = `<div class="bio-col-items">${renderItems(bioData.petItems)}</div>`;
+            }
+            if (bioPersonSocials) {
+                bioPersonSocials.innerHTML = bioData.selfSocials.map(s =>
+                    `<a href="${s.url}" target="_blank" class="social-icon-btn">
+                        <img src="${s.icon}" alt="${s.name}">
+                        <span>${s.name}</span>
+                    </a>`
+                ).join('');
+            }
+            if (bioPetSocials) {
+                bioPetSocials.innerHTML = bioData.petSocials.map(s =>
+                    `<a href="${s.url}" target="_blank" class="social-icon-btn">
+                        <img src="${s.icon}" alt="${s.name}">
+                        <span>${s.name}</span>
+                    </a>`
+                ).join('');
+            }
+
+            // 视频/相册 二级切换
+            const subtargetButtons = document.querySelectorAll('.tab-btn[data-subtarget]');
+            subtargetButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const parentPage = this.closest('.page');
+                    const siblingButtons = parentPage.querySelectorAll('.tab-btn[data-subtarget]');
+                    const siblingSubPages = parentPage.querySelectorAll('.video-sub-page');
+                    siblingButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    const targetId = this.getAttribute('data-subtarget');
+                    siblingSubPages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === targetId) page.classList.add('active');
+                    });
+                });
+            });
+
+            // ---------- 影视 ----------
+            renderMediaGroups('film-list-view', filmData.groups);
+            const filmDetailView = document.getElementById('film-detail-view');
+            const filmDetailContent = document.getElementById('film-detail-content');
+            const backToFilmBtn = document.getElementById('back-to-film-list-btn');
+            const filmList = document.getElementById('film-list-view');
+            filmList.querySelectorAll('.media-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.getAttribute('data-item-id');
+                    let film = null;
+                    filmData.groups.forEach(g => g.items.forEach(it => { if (it.id === id) film = it; }));
+                    if (!film) return;
+                    filmDetailContent.innerHTML = `
+                        <div class="detail-cover"><img src="${film.poster}" alt="${film.name}"></div>
+                        <div class="detail-info">
+                            <h3>${film.name}</h3>
+                            <div class="detail-meta">
+                                <div><strong>角色：</strong>${film.role}</div>
+                                <div><strong>播出平台：</strong>${film.platform}</div>
+                                <div><strong>播出集数：</strong>${film.episodes}</div>
+                            </div>
+                            <div class="section-label">在线观看链接</div>
+                            <div class="platform-links">
+                                <a href="${film.watchLink}" target="_blank" class="platform-btn">正片观看</a>
+                            </div>
+                            <div class="section-label">单人CUT</div>
+                            <div class="platform-links">
+                                <a href="${film.cutLink}" target="_blank" class="platform-btn">CUT合集</a>
+                            </div>
+                            <div class="section-label">花絮</div>
+                            <div class="platform-links">
+                                <a href="${film.btsLink}" target="_blank" class="platform-btn">花絮视频</a>
+                            </div>
+                        </div>
+                    `;
+                    filmList.style.display = 'none';
+                    filmDetailView.classList.add('active');
+                });
+            });
+            backToFilmBtn.addEventListener('click', function() {
+                filmDetailView.classList.remove('active');
+                filmList.style.display = 'block';
+            });
+
+            // ---------- 综艺 ----------
+            renderMediaGroups('variety-list-view', varietyData.groups);
+            const varietyDetailView = document.getElementById('variety-detail-view');
+            const varietyDetailContent = document.getElementById('variety-detail-content');
+            const backToVarietyBtn = document.getElementById('back-to-variety-list-btn');
+            const varietyList = document.getElementById('variety-list-view');
+            varietyList.querySelectorAll('.media-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.getAttribute('data-item-id');
+                    let item = null;
+                    varietyData.groups.forEach(g => g.items.forEach(it => { if (it.id === id) item = it; }));
+                    if (!item) return;
+                    varietyDetailContent.innerHTML = `
+                        <div class="detail-cover"><img src="${item.poster}" alt="${item.name}"></div>
+                        <div class="detail-info">
+                            <h3>${item.name}</h3>
+                            <div class="detail-meta"><div><strong>播出平台：</strong>${item.platform}</div></div>
+                            <div class="section-label">在线观看</div>
+                            <div class="platform-links">
+                                <a href="${item.watchLink}" target="_blank" class="platform-btn">在线观看</a>
+                            </div>
+                            <div class="section-label">B站</div>
+                            <div class="platform-links">
+                                <a href="${item.btsLink}" target="_blank" class="platform-btn">B站在线</a>
+                            </div>
+                            <div class="section-label">CUT</div>
+                            <div class="platform-links">
+                                <a href="${item.otherLink}" target="_blank" class="platform-btn">单人CUT</a>
+                            </div>
+                        </div>
+                    `;
+                    varietyList.style.display = 'none';
+                    varietyDetailView.classList.add('active');
+                });
+            });
+            backToVarietyBtn.addEventListener('click', function() {
+                varietyDetailView.classList.remove('active');
+                varietyList.style.display = 'block';
+            });
+
+            // ---------- MV ----------
+            renderMediaGroups('mv-list-view', mvData.groups);
+            const mvDetailView = document.getElementById('mv-detail-view');
+            const mvDetailContent = document.getElementById('mv-detail-content');
+            const backToMvBtn = document.getElementById('back-to-mv-list-btn');
+            const mvList = document.getElementById('mv-list-view');
+            mvList.querySelectorAll('.media-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.getAttribute('data-item-id');
+                    let item = null;
+                    mvData.groups.forEach(g => g.items.forEach(it => { if (it.id === id) item = it; }));
+                    if (!item) return;
+                    mvDetailContent.innerHTML = `
+                        <div class="detail-cover"><img src="${item.poster}" alt="${item.name}"></div>
+                        <div class="detail-info">
+                            <h3>${item.name}</h3>
+                            <div class="section-label">预告</div>
+                            <div class="platform-links">
+                                <a href="${item.previewLink}" target="_blank" class="platform-btn">观看预告</a>
+                            </div>
+                            <div class="section-label">正片</div>
+                            <div class="platform-links">
+                                <a href="${item.watchLink}" target="_blank" class="platform-btn">正片观看</a>
+                            </div>
+                            <div class="section-label">花絮</div>
+                            <div class="platform-links">
+                                <a href="${item.btsLink}" target="_blank" class="platform-btn">花絮视频</a>
+                            </div>
+                        </div>
+                    `;
+                    mvList.style.display = 'none';
+                    mvDetailView.classList.add('active');
+                });
+            });
+            backToMvBtn.addEventListener('click', function() {
+                mvDetailView.classList.remove('active');
+                mvList.style.display = 'block';
+            });
+
+            // ---------- Vlog / 直播 / 公演 / 其他（外链） ----------
+            renderLinkGroups('vlog-list-view', vlogData.groups);
+            renderLinkGroups('live-list-view', liveData.groups);
+            renderLinkGroups('stage-list-view', stageData.groups);
+            renderLinkGroups('other-list-view', otherVideoData.groups);
+
+            // ---------- 演出（缩略图 + 详情页） ----------
+            renderMediaGroups('show-list-view', showData.groups);
+            const showDetailView = document.getElementById('show-detail-view');
+            const showDetailContent = document.getElementById('show-detail-content');
+            const backToShowBtn = document.getElementById('back-to-show-list-btn');
+            const showList = document.getElementById('show-list-view');
+
+            showList.querySelectorAll('.media-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.getAttribute('data-item-id');
+                    let item = null;
+                    showData.groups.forEach(g => g.items.forEach(it => { if (it.id === id) item = it; }));
+                    if (!item) return;
+                    showDetailContent.innerHTML = `
+                        <div class="detail-cover"><img src="${item.poster}" alt="${item.name}"></div>
+                        <div class="detail-info">
+                            <h3>${item.name}</h3>
+                            <div class="detail-meta"><div><strong>平台：</strong>${item.platform}</div></div>
+                            <div class="section-label">在线观看</div>
+                            <div class="platform-links">
+                                <a href="${item.watchLink}" target="_blank" class="platform-btn">在线观看</a>
+                            </div>
+                            <div class="section-label">花絮</div>
+                            <div class="platform-links">
+                                <a href="${item.btsLink}" target="_blank" class="platform-btn">花絮视频</a>
+                            </div>
+                        </div>
+                    `;
+                    showList.style.display = 'none';
+                    showDetailView.classList.add('active');
+                });
+            });
+            backToShowBtn.addEventListener('click', function() {
+                showDetailView.classList.remove('active');
+                showList.style.display = 'block';
+            });
+
+            // ---------- 音乐卡片 ----------
+            const musicGrid = document.getElementById('music-grid-container');
+            if (musicGrid) {
+                musicGrid.innerHTML = musicCardList.map(card => {
+                    const album = musicAlbums[card.id];
+                    return `
+                        <div class="music-card" data-type="${card.type}" data-album-id="${card.id}">
+                            <div class="cover"><img src="${album.cover}" alt="${album.title}"></div>
+                            <div class="info">
+                                <div class="title">${album.title}</div>
+                                <div class="date">${album.date}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // 音乐筛选
+            const musicFilterButtons = document.querySelectorAll('#music .tab-btn[data-filter]');
+            const musicCards = document.querySelectorAll('.music-card');
+            musicFilterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    musicFilterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    const filterValue = this.getAttribute('data-filter');
+                    musicCards.forEach(card => {
+                        const cardType = card.getAttribute('data-type');
+                        if (filterValue === 'all' || filterValue === cardType) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 音乐详情
+            const musicList = document.getElementById('music-list-view');
+            const musicDetailView = document.getElementById('music-detail-view');
+            const musicDetailContent = document.getElementById('music-detail-content');
+            const backToMusicBtn = document.getElementById('back-to-music-btn');
+            musicCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const albumId = this.getAttribute('data-album-id');
+                    const album = musicAlbums[albumId];
+                    if (!album) return;
+                    const tracksHtml = album.tracks.map(track =>
+                        `<li><span class="track-name">${track.name}</span><span class="track-artist">${track.artist}</span></li>`
+                    ).join('');
+                    const platformsHtml = album.platforms.map(p =>
+                        `<a href="${p.url}" target="_blank" class="platform-btn">${p.name}</a>`
+                    ).join('');
+                    musicDetailContent.innerHTML = `
+                        <div class="detail-cover"><img src="${album.cover}" alt="${album.title}"></div>
+                        <div class="detail-info">
+                            <h3>${album.title}</h3>
+                            <div class="detail-meta">发行日期：${album.date}</div>
+                            <div class="section-label">曲目列表</div>
+                            <ul class="track-list">${tracksHtml}</ul>
+                            <div class="section-label">线上试听平台</div>
+                            <div class="platform-links">${platformsHtml}</div>
+                        </div>
+                    `;
+                    musicList.style.display = 'none';
+                    musicDetailView.classList.add('active');
+                });
+            });
+            backToMusicBtn.addEventListener('click', function() {
+                musicDetailView.classList.remove('active');
+                musicList.style.display = 'block';
+            });
+
+            // ---------- 相册渲染 ----------
+            const galleryCategories = ['gallery-business', 'gallery-portrait', 'gallery-life', 'gallery-magazine', 'gallery-other'];
+
+            galleryCategories.forEach(catId => {
+                const listEl = document.getElementById(catId + '-list');
+                const detailEl = document.getElementById(catId + '-detail');
+                if (!listEl || !detailEl) return;
+
+                const items = galleryData[catId] || [];
+                const detailContent = detailEl.querySelector('.gallery-detail-content');
+                const backBtn = detailEl.querySelector('.back-to-list');
+
+                listEl.innerHTML = `
+                    <div class="card-grid">
+                        ${items.map(item => `
+                            <div class="media-card" data-gallery-id="${item.id}">
+                                <div class="poster"><img src="${item.poster}" alt="${item.name}"></div>
+                                <div class="media-name">${item.name}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                listEl.querySelectorAll('.media-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const gid = this.getAttribute('data-gallery-id');
+                        const item = items.find(it => it.id === gid);
+                        if (!item) return;
+                        const imgList = item.images && item.images.length
+                            ? item.images
+                            : (item.full ? [item.full] : []);
+                        
+                        const imgsHtml = imgList.map((src, i) =>
+                            `<img src="${src}" alt="${item.name} ${i + 1}">`
+                        ).join('');
+                        
+                        detailContent.innerHTML = `
+                            <h3 class="gallery-title">${item.name}</h3>
+                            <div class="gallery-desc">${item.desc}</div>
+                            <div style="height: 40px;"></div>
+                            ${imgsHtml}
+                        `;
+                        listEl.style.display = 'none';
+                        detailEl.classList.add('active');
+                        window.scrollTo({top: 0, behavior: 'smooth'});
+                    });
+                });
+
+                backBtn.addEventListener('click', function() {
+                    detailEl.classList.remove('active');
+                    listEl.style.display = 'block';
+                });
+            });
+
+            // ---------- 点击导航切换到 Video/Music 时重置视图 ----------
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (this.getAttribute('data-target') === 'video') {
+                        filmDetailView.classList.remove('active');
+                        filmList.style.display = 'block';
+                        varietyDetailView.classList.remove('active');
+                        varietyList.style.display = 'block';
+                        mvDetailView.classList.remove('active');
+                        mvList.style.display = 'block';
+                        showDetailView.classList.remove('active');
+                        showList.style.display = 'block';
+                    }
+                    if (this.getAttribute('data-target') === 'music') {
+                        musicDetailView.classList.remove('active');
+                        musicList.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
